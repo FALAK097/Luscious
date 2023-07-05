@@ -1,6 +1,6 @@
 # Luscious Food Recipe Project
 
-Luscious is a food recipe project built using React, React Router, Framer Motion, and the Spoonacular API. It allows users to search for recipes, explore detailed recipe information, and browse recipes from multiple cuisines.
+Luscious is a Progressive Web Application (PWA) for food recipes, built using React, React Router, Framer Motion, and the Spoonacular API. It allows users to search for recipes, explore detailed recipe information, and browse recipes from multiple cuisines.
 
 ## Features
 
