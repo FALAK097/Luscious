@@ -35,31 +35,6 @@ Luscious is a food recipe project built using React, React Router, Framer Motion
 
 - Open your browser and visit `http://localhost:3000` to see the Luscious Food Recipe Project in action.
 
-## Project Structure
-
-The project structure is as follows:
-
-├── public
-│ ├── index.html
-│ └── ...
-├── src
-│ ├── components
-│ │ ├── Category.jsx
-│ │ ├── Search.jsx
-│ │ ├── Cuisine.jsx
-│ │ ├── Home.jsx
-│ │ ├── Popular.jsx
-│ │ ├── Recipe.jsx
-│ │ └── Veggie.jsx
-│ ├── pages
-│ │ └── Pages.jsx
-│ ├── App.jsx
-│ ├── index.js
-│ └── ...
-├── .env
-├── README.md
-└── ...
-
 ## Credits
 
 - [developedbyed](https://github.com/developedbyed/)
