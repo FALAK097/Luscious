@@ -2,6 +2,8 @@
 
 Luscious is a Progressive Web Application (PWA) for food recipes, built using React, React Router, Framer Motion, and the Spoonacular API. It allows users to search for recipes, explore detailed recipe information, and browse recipes from multiple cuisines.
 
+## [Live Demo](https://luscious-falak097.vercel.app/)
+
 ## Features
 
 - Search Functionality: Users can search for recipes based on specific keywords or ingredients.
