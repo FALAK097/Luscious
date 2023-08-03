@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
-import '@splidejs/react-splide/css';
-import { Link } from 'react-router-dom'
+import "@splidejs/react-splide/css";
+import { Link } from "react-router-dom";
 
 function Veggie() {
     const [veggie, setVeggie] = useState([]);
@@ -12,96 +12,113 @@ function Veggie() {
     }, []);
 
     const getVeggie = async () => {
+        try {
+            const check = localStorage.getItem("veggie");
 
-        const check = localStorage.getItem('veggie');
+            if (check) {
+                setVeggie(JSON.parse(check));
+            } else {
+                const api = await fetch(
+                    `https://api.spoonacular.com/recipes/random?apiKey=${process.env.REACT_APP_API_KEY}&number=9&tags=vegetarian`
+                );
+                const data = await api.json();
 
-        if (check) {
-            setVeggie(JSON.parse(check));
-        } else {
-            const api = await fetch(
-                `https://api.spoonacular.com/recipes/random?apiKey=${process.env.REACT_APP_API_KEY}&number=9&tags=vegetarian`
-            );
-            const data = await api.json();
-
-            localStorage.setItem("veggie", JSON.stringify(data.recipes));
-            setVeggie(data.recipes);
-            console.log(data.recipes);
+                localStorage.setItem("veggie", JSON.stringify(data.recipes));
+                setVeggie(data.recipes);
+                console.log(data.recipes);
+            }
+        } catch (error) {
+            console.error("Error fetching veggie recipes:", error);
+            setVeggie([]); // Set an empty array if there's an error to avoid "map" errors
         }
     };
+
+    if (!veggie || veggie.length === 0) {
+        return <div>Loading...</div>; // Conditional rendering for loading state or when there's no data
+    }
+
     return (
-        <div>
-            <Wrapper>
-                <h3>Our Vegetarian Picks</h3>
-                <Splide options={{
-                    perPage: 3,
-                    arrows: false,
-                    pagination: false,
-                    drag: "free",
-                    gap: "2rem",
-                }}>
-                    {veggie.map((recipe) => {
-                        return (
-                            <SplideSlide key={recipe.id}>
-                                <Card>
-                                    <Link to={"/recipe/" + recipe.id}>
-                                        <p>{recipe.title}</p>
-                                        <img src={recipe.image} alt={recipe.title} />
-                                        <Gradient />
-                                    </Link>
-                                </Card>
-                            </SplideSlide>
-                        );
-                    })}
-                </Splide>
-            </Wrapper>
-        </div>
-    )
+        <Wrapper>
+            <Heading>Our Vegetarian Picks</Heading>
+            <Splide options={splideOptions}>
+                {veggie.map((recipe) => (
+                    <SplideSlide key={recipe.id}>
+                        <Card>
+                            <Link to={"/recipe/" + recipe.id}>
+                                <Image src={recipe.image} alt={recipe.title} />
+                                <Title>{recipe.title}</Title>
+                            </Link>
+                        </Card>
+                    </SplideSlide>
+                ))}
+            </Splide>
+        </Wrapper>
+    );
 }
 
+const splideOptions = {
+    perPage: 3,
+    arrows: false,
+    pagination: false,
+    gap: "2rem",
+};
+
 const Wrapper = styled.div`
-  margin:2rem 0rem
+  margin: 2rem 0rem;
+
+  @media (max-width: 768px) {
+    margin: 1rem 0rem;
+  }
+`;
+
+const Heading = styled.h3`
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+
+  @media (max-width: 768px) {
+    font-size: 1.8rem;
+  }
 `;
 
 const Card = styled.div`
-  min-height: 15rem;
   border-radius: 2rem;
   overflow: hidden;
-  padding: 1rem;
-  position:relative;
+  position: relative;
 
-  img{
-    border-radius: 2rem;
-    position:absolute;
-    left:2px;
-    width:100%;
-    height:100%;
-    object-fit:cover;
-  }
-
-  p{
-    position:absolute;
-    z-index: 10;
-    left:50%;
-    bottom:0%;
-    transform:translate(-50%, 0%);
-    color:white;
-    width:100%;
-    text-align:center;
-    font-weight:600;
-    font-size:1rem;
-    height:40%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+  a {
+    text-decoration: none;
   }
 `;
 
-const Gradient = styled.div`
-  z-index:3;
-  position: absolute;
+const Image = styled.img`
+  border-radius: 2rem;
   width: 100%;
-  height:100%;
-  background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.05));
-`
+  height: 22rem;
+  object-fit: cover;
+`;
 
-export default Veggie
+const Title = styled.p`
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%, 0);
+  color: white;
+  width: 100%;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.2rem;
+  height: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7));
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    height: 30%;
+  }
+`;
+
+export default Veggie;
