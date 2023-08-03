@@ -13,8 +13,12 @@ function App() {
           <GiKnifeFork />
           <Logo to="/">🍔Luscious</Logo>
         </Nav>
-        <Search />
-        <Category />
+        <MainContent>
+          <Category />
+          <MobileSearch>
+            <Search />
+          </MobileSearch>
+        </MainContent>
         <Pages />
       </BrowserRouter>
     </div>
@@ -37,4 +41,24 @@ const Nav = styled.div`
     font-size: 1.75rem;
   }
 `;
+
+const MainContent = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
+
+const MobileSearch = styled.div`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+    margin: 2rem 0;
+  }
+`;
+
 export default App;

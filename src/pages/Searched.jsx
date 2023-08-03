@@ -45,7 +45,7 @@ function Searched() {
 
 const Grid = styled(motion.div)`
     display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(15rem,4fr));
+    grid-template-columns:repeat(auto-fit, minmax(12rem,4fr));
     grid-gap:2rem;
 `;
 

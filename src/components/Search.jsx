@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 function Search() {
   const [input, setInput] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
   const navigate = useNavigate();
 
   const submitHandler = (e) => {
@@ -12,16 +13,45 @@ function Search() {
     navigate("/searched/" + input);
   };
 
+  const handleInputChange = async (e) => {
+    setInput(e.target.value);
+
+    // Fetch search suggestions from Spoonacular API
+    try {
+      const response = await fetch(
+        `https://api.spoonacular.com/recipes/autocomplete?apiKey=${process.env.REACT_APP_API_KEY}&number=5&query=${encodeURIComponent(e.target.value)}`
+      );
+      const data = await response.json();
+
+      setSearchResults(data.map((item) => item.title));
+    } catch (error) {
+      console.error("Error fetching search suggestions:", error);
+      setSearchResults([]);
+    }
+  };
+
+  const handleSuggestionClick = (suggestion) => {
+    setInput(suggestion);
+    setSearchResults([]); // Clear suggestions when user selects one
+  };
+
   return (
     <FormStyle onSubmit={submitHandler}>
       <SearchWrapper>
         <FaSearch />
         <input
-          onChange={(e) => setInput(e.target.value)}
+          onChange={handleInputChange}
           type="text"
           value={input}
           placeholder="Search"
+          list="suggestions"
         />
+        <datalist id="suggestions">
+          {/* Display the search suggestions */}
+          {searchResults.map((suggestion, index) => (
+            <option key={index} value={suggestion} onClick={() => handleSuggestionClick(suggestion)} />
+          ))}
+        </datalist>
       </SearchWrapper>
     </FormStyle>
   );
