@@ -46,7 +46,6 @@ function Searched() {
 const Grid = styled(motion.div)`
     display:grid;
     grid-template-columns:repeat(auto-fit, minmax(12rem,4fr));
-    grid-gap:2rem;
 `;
 
 const Card = styled.div`

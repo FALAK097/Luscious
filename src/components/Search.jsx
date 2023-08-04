@@ -58,10 +58,9 @@ function Search() {
 }
 
 const FormStyle = styled.form`
-  margin: 0rem 2rem;
 
   @media (min-width: 768px) {
-    margin: 0rem 9rem;
+    margin: 1rem 5rem;
   }
 `;
 

@@ -2,65 +2,72 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
+import "./splide-custom.css"; // Import the custom CSS you created
 import { Link } from "react-router-dom";
 
 function Veggie() {
-    const [veggie, setVeggie] = useState([]);
+  const [veggie, setVeggie] = useState([]);
 
-    useEffect(() => {
-        getVeggie();
-    }, []);
+  useEffect(() => {
+    getVeggie();
+  }, []);
 
-    const getVeggie = async () => {
-        try {
-            const check = localStorage.getItem("veggie");
+  const getVeggie = async () => {
+    try {
+      const check = localStorage.getItem("veggie");
 
-            if (check) {
-                setVeggie(JSON.parse(check));
-            } else {
-                const api = await fetch(
-                    `https://api.spoonacular.com/recipes/random?apiKey=${process.env.REACT_APP_API_KEY}&number=9&tags=vegetarian`
-                );
-                const data = await api.json();
+      if (check) {
+        setVeggie(JSON.parse(check));
+      } else {
+        const api = await fetch(
+          `https://api.spoonacular.com/recipes/random?apiKey=${process.env.REACT_APP_API_KEY}&number=9&tags=vegetarian`
+        );
+        const data = await api.json();
 
-                localStorage.setItem("veggie", JSON.stringify(data.recipes));
-                setVeggie(data.recipes);
-                console.log(data.recipes);
-            }
-        } catch (error) {
-            console.error("Error fetching veggie recipes:", error);
-            setVeggie([]); // Set an empty array if there's an error to avoid "map" errors
-        }
-    };
-
-    if (!veggie || veggie.length === 0) {
-        return <div>Loading...</div>; // Conditional rendering for loading state or when there's no data
+        localStorage.setItem("veggie", JSON.stringify(data.recipes));
+        setVeggie(data.recipes);
+        console.log(data.recipes);
+      }
+    } catch (error) {
+      console.error("Error fetching veggie recipes:", error);
+      setVeggie([]); // Set an empty array if there's an error to avoid "map" errors
     }
+  };
 
-    return (
-        <Wrapper>
-            <Heading>Our Vegetarian Picks</Heading>
-            <Splide options={splideOptions}>
-                {veggie.map((recipe) => (
-                    <SplideSlide key={recipe.id}>
-                        <Card>
-                            <Link to={"/recipe/" + recipe.id}>
-                                <Image src={recipe.image} alt={recipe.title} />
-                                <Title>{recipe.title}</Title>
-                            </Link>
-                        </Card>
-                    </SplideSlide>
-                ))}
-            </Splide>
-        </Wrapper>
-    );
+  if (!veggie || veggie.length === 0) {
+    return <div>Loading...</div>; // Conditional rendering for loading state or when there's no data
+  }
+
+  return (
+    <Wrapper>
+      <Heading>Our Vegetarian Picks</Heading>
+      <Splide options={splideOptions}>
+        {veggie.map((recipe) => (
+          <SplideSlide key={recipe.id}>
+            <Card>
+              <Link to={"/recipe/" + recipe.id}>
+                <Image src={recipe.image} alt={recipe.title} />
+                <Title>{recipe.title}</Title>
+              </Link>
+            </Card>
+          </SplideSlide>
+        ))}
+      </Splide>
+    </Wrapper>
+  );
 }
 
 const splideOptions = {
-    perPage: 3,
-    arrows: false,
-    pagination: false,
-    gap: "2rem",
+  perPage: 3, // Show 3 slides per page by default
+  arrows: false,
+  pagination: true,
+  gap: "2rem",
+  breakpoints: {
+    768: {
+      perPage: 2, // Show 2 slides per page for screens below 768px width
+      gap: "1rem", // Reduce gap for smaller screens
+    },
+  },
 };
 
 const Wrapper = styled.div`
@@ -118,6 +125,10 @@ const Title = styled.p`
   @media (max-width: 768px) {
     font-size: 1rem;
     height: 30%;
+  }
+  @media (max-width: 425px) {
+    font-size: 0.75rem;
+    height: 40%;
   }
 `;
 

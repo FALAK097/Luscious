@@ -14,10 +14,10 @@ function App() {
           <Logo to="/">🍔Luscious</Logo>
         </Nav>
         <MainContent>
-          <Category />
-          <MobileSearch>
+          <SearchWrapper>
             <Search />
-          </MobileSearch>
+          </SearchWrapper>
+          <Category />
         </MainContent>
         <Pages />
       </BrowserRouter>
@@ -46,18 +46,14 @@ const MainContent = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-  }
 `;
 
-const MobileSearch = styled.div`
-  display: none;
+const SearchWrapper = styled.div`
+  flex: 1;
 
   @media (max-width: 768px) {
-    display: block;
-    margin: 2rem 0;
+    order: 2;
+    margin-bottom: 1rem;
   }
 `;
 

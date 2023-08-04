@@ -2,65 +2,72 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
+import "./splide-custom.css";
 import { Link } from "react-router-dom";
 
 function Popular() {
-    const [popular, setPopular] = useState([]);
+  const [popular, setPopular] = useState([]);
 
-    useEffect(() => {
-        getPopular();
-    }, []);
+  useEffect(() => {
+    getPopular();
+  }, []);
 
-    const getPopular = async () => {
-        try {
-            const check = localStorage.getItem("popular");
+  const getPopular = async () => {
+    try {
+      const check = localStorage.getItem("popular");
 
-            if (check) {
-                setPopular(JSON.parse(check));
-            } else {
-                const api = await fetch(
-                    `https://api.spoonacular.com/recipes/random?apiKey=${process.env.REACT_APP_API_KEY}&number=9`
-                );
-                const data = await api.json();
+      if (check) {
+        setPopular(JSON.parse(check));
+      } else {
+        const api = await fetch(
+          `https://api.spoonacular.com/recipes/random?apiKey=${process.env.REACT_APP_API_KEY}&number=9`
+        );
+        const data = await api.json();
 
-                localStorage.setItem("popular", JSON.stringify(data.recipes));
-                setPopular(data.recipes);
-                console.log(data.recipes);
-            }
-        } catch (error) {
-            console.error("Error fetching popular recipes:", error);
-            setPopular([]); // Set an empty array if there's an error to avoid "map" errors
-        }
-    };
-
-    if (!popular || popular.length === 0) {
-        return <div>Loading...</div>; // Conditional rendering for loading state or when there's no data
+        localStorage.setItem("popular", JSON.stringify(data.recipes));
+        setPopular(data.recipes);
+        console.log(data.recipes);
+      }
+    } catch (error) {
+      console.error("Error fetching popular recipes:", error);
+      setPopular([]); // Set an empty array if there's an error to avoid "map" errors
     }
+  };
 
-    return (
-        <Wrapper>
-            <Heading>Popular Picks</Heading>
-            <Splide options={splideOptions}>
-                {popular.map((recipe) => (
-                    <SplideSlide key={recipe.id}>
-                        <Card>
-                            <Link to={"/recipe/" + recipe.id}>
-                                <Image src={recipe.image} alt={recipe.title} />
-                                <Title>{recipe.title}</Title>
-                            </Link>
-                        </Card>
-                    </SplideSlide>
-                ))}
-            </Splide>
-        </Wrapper>
-    );
+  if (!popular || popular.length === 0) {
+    return <div>Loading...</div>; // Conditional rendering for loading state or when there's no data
+  }
+
+  return (
+    <Wrapper>
+      <Heading>Popular Picks</Heading>
+      <Splide options={splideOptions}>
+        {popular.map((recipe) => (
+          <SplideSlide key={recipe.id}>
+            <Card>
+              <Link to={"/recipe/" + recipe.id}>
+                <Image src={recipe.image} alt={recipe.title} />
+                <Title>{recipe.title}</Title>
+              </Link>
+            </Card>
+          </SplideSlide>
+        ))}
+      </Splide>
+    </Wrapper>
+  );
 }
 
 const splideOptions = {
-    perPage: 3,
-    arrows: false,
-    pagination: false,
-    gap: "2rem",
+  perPage: 3, // Show 3 slides per page by default
+  arrows: false,
+  pagination: true,
+  gap: "2rem",
+  breakpoints: {
+    768: {
+      perPage: 2, // Show 2 slides per page for screens below 768px width
+      gap: "1rem", // Reduce gap for smaller screens
+    },
+  },
 };
 
 const Wrapper = styled.div`
@@ -118,6 +125,10 @@ const Title = styled.p`
   @media (max-width: 768px) {
     font-size: 1rem;
     height: 30%;
+  }
+  @media (max-width: 425px) {
+    font-size: 0.75rem;
+    height: 40%;
   }
 `;
 

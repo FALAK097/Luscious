@@ -77,7 +77,7 @@ const DetailWrapper = styled.div`
     margin-bottom: 5rem;
     h2 {
         margin: 1rem 0;
-        font-size: 2rem;
+        font-size: 1.2rem;
     }
 `;
 
@@ -119,6 +119,10 @@ const Button = styled.button`
     &.active {
         background: linear-gradient(35deg, #494949, #313131);
         color: white;
+    }
+
+    @media (max-width:767px){
+        margin-left: 2rem;
     }
 `;
 
