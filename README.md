@@ -29,8 +29,7 @@ Luscious is a Progressive Web Application (PWA) for food recipes, built using Re
 
 - Set up environment variables:
 
-  1. Rename the .env.example file to .env.
-  2. Open the .env file and add your Spoonacular API key.
+  1. Create the .env file and add your Spoonacular API key.
 
 - Start the development server:
   `npm start`
