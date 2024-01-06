@@ -35,11 +35,3 @@ Luscious is a Progressive Web Application (PWA) for food recipes, built using Re
   `npm start`
 
 - Open your browser and visit `http://localhost:3000` to see the Luscious Food Recipe Project in action.
-
-## Credits
-
-- [developedbyed](https://github.com/developedbyed/)
-- [React](https://reactjs.org)
-- [React Router](https://reactrouter.com)
-- [Framer Motion](https://www.framer.com/api/motion/)
-- [Spoonacular API](https://spoonacular.com/food-api)
